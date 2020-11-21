@@ -22,7 +22,7 @@ class PostAdapter internal constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val dataBinding =
             PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(dataBinding, listener)
+        return PostViewHolder(dataBinding)
     }
 
 //    override fun getItemCount(): Int {
@@ -33,7 +33,7 @@ class PostAdapter internal constructor(
         Log.d("UPP", "onBindViewHolder: ${position}")
         getItem(position)?.let {
             Log.d("UPP", "onBindViewHolder: ${it.title}")
-            holder.bind(it, position)}
+            holder.bind(it, listener)}
 //        when (holder) {
 //            is PostViewHolder -> {
 //                getItem(position)?.let {
@@ -62,6 +62,6 @@ class PostAdapter internal constructor(
 
 }
 
-internal interface OnPostClickListener {
-    fun onPostClick(position: Int, view: View)
+interface OnPostClickListener {
+    fun onPostClick(post:Post)
 }

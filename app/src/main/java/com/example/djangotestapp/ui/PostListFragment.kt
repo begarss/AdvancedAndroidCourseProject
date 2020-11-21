@@ -118,6 +118,7 @@ class PostListFragment : Fragment(), OnPostClickListener {
 
          viewDataBinding?.viewmodel?.fetchPosts()?.collectLatest {
              adapter.submitData(it)
+
          }
             Log.d("UPP", "fetchPostsss: ${adapter.getItemId(1)}")
 
@@ -128,9 +129,9 @@ class PostListFragment : Fragment(), OnPostClickListener {
 //            adapter.submitList(it as ArrayList<Post>)
 //        })
 
-    override fun onPostClick(position: Int, view: View) {
-        val post = adapter.getList()[position]
-        view.findNavController().navigate(PostListFragmentDirections.toPostDetailsFragment(post.id))
+    override fun onPostClick(post: Post) {
+//        val post = adapter.getItemViewType()
+        view?.findNavController()?.navigate(PostListFragmentDirections.toPostDetailsFragment(post.id))
 
     }
 

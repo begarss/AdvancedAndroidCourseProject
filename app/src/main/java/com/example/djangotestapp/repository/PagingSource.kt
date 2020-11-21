@@ -18,7 +18,7 @@ class PagingSource(private val postListService: PostListService) : PagingSource<
             val listing = response.body()
             val posts = listing?.results
             val prevKey = if (nextPageNumber > 1) nextPageNumber - 1 else null
-            val nextKey = if (!listing?.next.isNullOrEmpty()) nextPageNumber + 1 else null
+            val nextKey = if (!listing?.next.isNullOrEmpty() && !listing?.next.equals("null")) nextPageNumber + 1 else null
             Log.d("UPP", "load: ${posts}")
 
             LoadResult.Page(
