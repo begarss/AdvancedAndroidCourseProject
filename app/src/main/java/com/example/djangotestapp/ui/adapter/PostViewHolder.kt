@@ -37,10 +37,5 @@ class PostViewHolder internal constructor(
         }
     }
 
-//    override fun onClick(v: View?) {
-//        if (v != null) {
-//            listener.onPostClick(adapterPosition, v)
-//        }
-//    }
 
 }

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
+        <action
+            android:id="@+id/action_postListFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
         android:id="@+id/postDetailsFragment"
@@ -26,4 +29,9 @@
             android:id="@+id/action_postDetailsFragment_to_postListFragment"
             app:destination="@id/postListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.djangotestapp.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
 </navigation>

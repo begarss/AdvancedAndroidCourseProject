@@ -30,9 +30,7 @@ class PostAdapter internal constructor(
 //    }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        Log.d("UPP", "onBindViewHolder: ${position}")
         getItem(position)?.let {
-            Log.d("UPP", "onBindViewHolder: ${it.title}")
             holder.bind(it, listener)}
 //        when (holder) {
 //            is PostViewHolder -> {
@@ -54,6 +52,7 @@ class PostAdapter internal constructor(
     fun submitList(postList: ArrayList<Post>) {
         items = postList
         notifyDataSetChanged()
+//        refresh()
     }
 
     fun getList(): ArrayList<Post> {

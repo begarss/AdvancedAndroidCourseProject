@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,7 +42,7 @@ class PostListFragment : Fragment(), OnPostClickListener {
     ): View? {
         // Inflate the layout for this fragment
         viewDataBinding = FragmentPostListBinding.inflate(inflater, container, false)
-        viewDataBinding.lifecycleOwner=this
+        viewDataBinding.lifecycleOwner = this
         viewDataBinding.viewmodel = postViewModel
         return viewDataBinding.root
     }
@@ -59,7 +60,7 @@ class PostListFragment : Fragment(), OnPostClickListener {
 
 
 
-            Log.d("UPP", "fetchPosts: ${adapter.getList()}")
+        Log.d("UPP", "fetchPosts: ${adapter.getList()}")
 
 
         setSpinner()
@@ -68,7 +69,7 @@ class PostListFragment : Fragment(), OnPostClickListener {
 
     }
 
-    private fun setSpinner(){
+    private fun setSpinner() {
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 viewDataBinding.viewmodel?.postList?.observe(viewLifecycleOwner, Observer {
@@ -104,34 +105,24 @@ class PostListFragment : Fragment(), OnPostClickListener {
 
     }
 
-//    private fun setObserver() = lifecycleScope.launch {
-//        viewDataBinding.viewmodel?.fetchPosts()?.collectLatest {
-//            adapter.submitData(it)
-//            Log.d("UPP", "setObserver: ${it.map { it }}")
-//        }
-//
-//
-//    }
 
     private fun fetchPosts() {
         viewLifecycleOwner.lifecycleScope.launch {
 
-         viewDataBinding?.viewmodel?.fetchPosts()?.collectLatest {
-             adapter.submitData(it)
+            viewDataBinding?.viewmodel?.fetchPosts()?.collectLatest {
+                adapter.submitData(it)
 
-         }
+            }
             Log.d("UPP", "fetchPostsss: ${adapter.getItemId(1)}")
 
         }
 
     }
-//        viewDataBinding.viewmodel?.postList?.observe(viewLifecycleOwner, Observer {
-//            adapter.submitList(it as ArrayList<Post>)
-//        })
+
 
     override fun onPostClick(post: Post) {
-//        val post = adapter.getItemViewType()
-        view?.findNavController()?.navigate(PostListFragmentDirections.toPostDetailsFragment(post.id))
+        view?.findNavController()
+            ?.navigate(PostListFragmentDirections.toPostDetailsFragment(post.id))
 
     }
 
@@ -142,12 +133,17 @@ class PostListFragment : Fragment(), OnPostClickListener {
             viewDataBinding.viewmodel?.postList?.observe(viewLifecycleOwner, Observer {
                 adapter.submitList(it as ArrayList<Post>)
             })
+            adapter.refresh()
         } else {
             viewDataBinding?.viewmodel?.getCatPosts(position)
 
             viewDataBinding.viewmodel?.categoryPosts?.observe(viewLifecycleOwner, Observer {
                 adapter.submitList(it as ArrayList<Post>)
             })
+            viewLifecycleOwner.lifecycleScope.launch {
+                adapter.submitData(PagingData.empty())
+            }
+
         }
     }
 

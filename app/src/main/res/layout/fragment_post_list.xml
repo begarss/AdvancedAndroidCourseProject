@@ -70,7 +70,7 @@
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:scrollbars="vertical"
                     android:clipToPadding="false"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -113,6 +113,7 @@
                     android:layout_marginStart="28dp"
                     android:layout_marginTop="8dp"
                     android:text="Категории:"
+                    android:textStyle="bold"
                     android:textColor="#000000"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/appBar" />
@@ -122,7 +123,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:background="#fdfdf9"
+
+                    android:accessibilityPaneTitle="@string/app_name"
                     android:entries="@{viewmodel.categoryList}"
                     android:outlineAmbientShadowColor="#673AB7"
                     app:layout_constraintBottom_toBottomOf="@+id/textView"
