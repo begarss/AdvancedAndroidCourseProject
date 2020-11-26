@@ -1,7 +1,9 @@
 package com.example.djangotestapp.model.api
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,7 +15,7 @@ object API {
     private var mPostListService: PostListService? = null
     private val postListService: PostListService = generatePostService()
 
-     fun generatePostService(): PostListService {
+    fun generatePostService(): PostListService {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL).client(getHttpClient()).addCallAdapterFactory(
                 RxJava2CallAdapterFactory.create()
@@ -23,23 +25,20 @@ object API {
     }
 
     private fun getHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
+        return OkHttpClient.Builder().addInterceptor(getLogginInterceptor())
             .build()
     }
 
-//    fun getClient(): Retrofit? {
-//        if (retrofit == null) {
-//            retrofit = Retrofit.Builder()
-//                .baseUrl(BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//        }
-//        return retrofit
-//    }
+    private fun getLogginInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor(logger = object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String) {
+                Log.d("UPP", "log: $message")
+            }
 
-//    fun getApi(): PostListService? {
-//        mPostListService = getClient()
-//            ?.create(PostListService::class.java)
-//        return mPostListService
-//    }
+        }).apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+
+    }
 }

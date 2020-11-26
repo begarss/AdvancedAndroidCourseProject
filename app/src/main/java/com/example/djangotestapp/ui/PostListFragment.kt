@@ -21,6 +21,7 @@ import com.example.djangotestapp.databinding.FragmentPostListBinding
 import com.example.djangotestapp.model.dataClass.Post
 import com.example.djangotestapp.ui.adapter.OnPostClickListener
 import com.example.djangotestapp.ui.adapter.PostAdapter
+import com.example.djangotestapp.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -32,6 +33,7 @@ class PostListFragment : Fragment(), OnPostClickListener {
     private lateinit var viewDataBinding: FragmentPostListBinding
     private lateinit var adapter: PostAdapter
     private val postViewModel: PostViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -54,17 +56,9 @@ class PostListFragment : Fragment(), OnPostClickListener {
 
         viewDataBinding.viewmodel?.getCategories()
         setAdapter()
-//        setObserver()
         fetchPosts()
 
-
-
-
-        Log.d("UPP", "fetchPosts: ${adapter.getList()}")
-
-
         setSpinner()
-        Log.d("UPP", "fetchPostsasa: ${adapter.getItemViewType(1)}")
 
 
     }
@@ -109,7 +103,7 @@ class PostListFragment : Fragment(), OnPostClickListener {
     private fun fetchPosts() {
         viewLifecycleOwner.lifecycleScope.launch {
 
-            viewDataBinding?.viewmodel?.fetchPosts()?.collectLatest {
+            viewDataBinding.viewmodel?.fetchPosts()?.collectLatest {
                 adapter.submitData(it)
 
             }
@@ -135,7 +129,7 @@ class PostListFragment : Fragment(), OnPostClickListener {
             })
             adapter.refresh()
         } else {
-            viewDataBinding?.viewmodel?.getCatPosts(position)
+            viewDataBinding.viewmodel?.getCatPosts(position)
 
             viewDataBinding.viewmodel?.categoryPosts?.observe(viewLifecycleOwner, Observer {
                 adapter.submitList(it as ArrayList<Post>)

@@ -6,5 +6,7 @@
         <item name="colorPrimaryDark">#D9D4E4</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="ToolBarWithNavigationBack">
+        <item name="navigationIcon">@drawable/abc_ic_ab_back_material</item>
+    </style>
 </resources>

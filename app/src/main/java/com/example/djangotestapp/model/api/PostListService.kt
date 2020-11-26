@@ -1,5 +1,6 @@
 package com.example.djangotestapp.model.api
 
+import androidx.lifecycle.LiveData
 import com.example.djangotestapp.model.dataClass.*
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -25,4 +26,16 @@ interface PostListService {
 
     @GET("posts/{id}/")
     fun getPosttDetails(@Path("id") id: Int): Single<Post>
+
+    //User
+    @Headers("Content-Type:application/json;")
+    @POST("users/")
+    suspend fun createUser(@Body user: UserCreateBody): Response<Author>
+
+    @Headers("Content-Type:application/json;")
+    @POST("login/")
+    suspend fun login(@Body login: UserCreateBody): LoginResponse
+
+    @GET("profile/{id}/posts")
+    suspend fun getUserPosts(@Path("id") id:Int): List<Post>
 }

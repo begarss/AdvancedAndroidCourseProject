@@ -22,18 +22,7 @@ class PostRepository(private val postListService: PostListService) {
         }.flow
     }
 
-//    fun getPosts(next:String,previous:String,onResult: (isSuccess: Boolean, response: List<Post>) -> Unit){
-//        val posts = postListService.getListPost(next = next,previous =previous )
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({posts->
-//                onResult(true,posts)
-//                Log.i("MG", "success + $posts")
-//            },{
-//                onResult(false, emptyList())
-//                Log.i("MG", it.message)
-//            })
-//    }
+
 
     fun getCategories(onResult: (isSuccess: Boolean, response: List<String>) -> Unit){
         val categories = postListService.getCategoryList()

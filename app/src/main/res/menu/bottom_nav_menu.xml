@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home"
+        android:id="@+id/postListFragment"
         android:title="Лента"
         android:icon="@drawable/ic_baseline_home_24"/>
     <item
@@ -9,7 +9,7 @@
         android:title="Закладки"
         android:icon="@drawable/ic_bookmark"/>
     <item
-        android:id="@+id/profile"
+        android:id="@+id/profileFragment"
         android:title="Профиль"
         android:icon="@drawable/ic_person"/>
     <item

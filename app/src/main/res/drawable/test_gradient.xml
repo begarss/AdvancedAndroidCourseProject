@@ -17,10 +17,10 @@
             android:translateX="0.182"
             android:translateY="0.898"
             android:pivotX="205.5"
-            android:pivotY="365.5"
+            android:pivotY="345.5"
             android:scaleX="1.782"
             android:scaleY="1.766"
-            android:rotation="-81.917"
+            android:rotation="-89.917"
             >
 
             <path
@@ -58,7 +58,7 @@
                             />
 
                         <item
-                            android:color="#C3D5EB"
+                            android:color="#C7D4E4"
                             android:offset="1"
                             />
 

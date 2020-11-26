@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.SignUpFragment">
+    tools:context=".ui.LoginFragment">
 
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Регистрация"
+        android:text="Авторизация"
         android:textColor="#091C3F"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="@+id/ivLogo"
@@ -39,7 +39,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:singleLine="false"
-        android:text="Создайте аккаунт"
+        android:text="Введите логин и пароль"
         android:textAlignment="center"
         android:textColor="#0097A7"
         android:textSize="18sp"
@@ -62,7 +62,7 @@
         app:startIconDrawable="@drawable/ic_account">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/newPsw"
+            android:id="@+id/loginTF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Логин"
@@ -71,7 +71,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tinConfirm"
+        android:id="@+id/pswTF"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
         app:startIconDrawable="@drawable/ic_password">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/newPswConfirm"
+            android:id="@+id/loginPsw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Введите пароль"
@@ -95,18 +95,43 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnCreate"
+        android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="51dp"
         android:layout_marginTop="16dp"
-        android:text="Создать"
+        android:text="Вход"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="@+id/tinConfirm"
+        app:layout_constraintEnd_toEndOf="@+id/pswTF"
         app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="@+id/tinConfirm"
-        app:layout_constraintTop_toBottomOf="@+id/tinConfirm" />
+        app:layout_constraintStart_toStartOf="@+id/pswTF"
+        app:layout_constraintTop_toBottomOf="@+id/pswTF" />
+
+    <com.agrawalsuneet.dotsloader.loaders.ZeeLoader
+        android:id="@+id/loadingBtnProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnLogin"
+        app:layout_constraintStart_toStartOf="@+id/btnLogin"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        app:zee_animDuration="300"
+        app:zee_distanceMultiplier="4"
+        app:zee_dotsRadius="8dp"
+        app:zee_firstDotsColor="@color/colorAccent"
+        app:zee_secondDotsColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/textViewRegisterNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/don_t_have_an_account_register_now"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"  />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

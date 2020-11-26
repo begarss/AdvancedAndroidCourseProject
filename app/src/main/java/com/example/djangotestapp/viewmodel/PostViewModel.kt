@@ -4,11 +4,13 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.djangotestapp.model.dataClass.Category
+import com.example.djangotestapp.model.dataClass.LoginResponse
 import com.example.djangotestapp.model.dataClass.Post
 import com.example.djangotestapp.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
@@ -86,4 +88,8 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
                 empty.value = true
         }
     }
+
+    val user = MutableLiveData<LoginResponse>()
+
+
 }
