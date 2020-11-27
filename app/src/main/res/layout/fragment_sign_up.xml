@@ -62,7 +62,7 @@
         app:startIconDrawable="@drawable/ic_account">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/newPsw"
+            android:id="@+id/SUlogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Логин"
@@ -85,7 +85,7 @@
         app:startIconDrawable="@drawable/ic_password">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/newPswConfirm"
+            android:id="@+id/SUpsw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Введите пароль"
@@ -99,14 +99,27 @@
         android:layout_width="0dp"
         android:layout_height="51dp"
         android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
         android:text="Создать"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="@+id/tinConfirm"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="@+id/tinConfirm"
         app:layout_constraintTop_toBottomOf="@+id/tinConfirm" />
-
+    <com.agrawalsuneet.dotsloader.loaders.ZeeLoader
+        android:id="@+id/loadingBtnProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnCreate"
+        app:layout_constraintStart_toStartOf="@+id/btnCreate"
+        app:layout_constraintTop_toBottomOf="@+id/btnCreate"
+        app:zee_animDuration="300"
+        app:zee_distanceMultiplier="4"
+        app:zee_dotsRadius="8dp"
+        app:zee_firstDotsColor="@color/colorAccent"
+        app:zee_secondDotsColor="@color/colorPrimaryDark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

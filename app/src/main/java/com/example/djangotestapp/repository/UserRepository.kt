@@ -19,27 +19,30 @@ import kotlin.math.log
 
 class UserRepository(private val service: PostListService, private val manager: UserManager) : BaseRepository() {
 
-    suspend fun createUser(
-        username: String,
-        password: String,
-        onResult: (isSuccess: Boolean, response: Author?) -> Unit
-    ) {
-        try {
-            val res = service.createUser(UserCreateBody(username, password))
-            if (res.isSuccessful) {
-                res.body()?.let { onResult(true, it) }
-                Log.d("UPP", "createUser: ${res.body()?.username}")
-            }
+//    suspend fun createUser(
+//        username: String,
+//        password: String,
+//        onResult: (isSuccess: Boolean, response: Author?) -> Unit
+//    ) {
+//        try {
+//            val res = service.createUser(UserCreateBody(username, password))
+//            if (res.isSuccessful) {
+//                res.body()?.let { onResult(true, it) }
+//                Log.d("UPP", "createUser: ${res.body()?.username}")
+//            }
+//
+//        } catch (
+//            cause: Throwable
+//        ) {
+//            onResult(false, null)
+//
+//            throw UserRefreshError("Error with user registration", cause)
+//        }
+//    }
 
-        } catch (
-            cause: Throwable
-        ) {
-            onResult(false, null)
-
-            throw UserRefreshError("Error with user registration", cause)
-        }
+    suspend fun creatUser(username: String,password: String) = safeApiCall{
+        service.createUser(UserCreateBody(username, password))
     }
-
 
     suspend fun login(username: String, password: String) = safeApiCall {
         service.login(UserCreateBody(username, password))

@@ -113,6 +113,16 @@ class PostListFragment : Fragment(), OnPostClickListener {
 
     }
 
+    private fun fetchCatPosts(position: Int){
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewDataBinding.viewmodel?.getCatPosts(position)?.collectLatest {
+                adapter.submitData(it)
+            }
+            Log.d("UPP", "fetchPostsss: ${adapter.getItemId(1)}")
+
+        }
+    }
 
     override fun onPostClick(post: Post) {
         view?.findNavController()
@@ -129,14 +139,14 @@ class PostListFragment : Fragment(), OnPostClickListener {
             })
             adapter.refresh()
         } else {
-            viewDataBinding.viewmodel?.getCatPosts(position)
+            fetchCatPosts(position)
 
-            viewDataBinding.viewmodel?.categoryPosts?.observe(viewLifecycleOwner, Observer {
-                adapter.submitList(it as ArrayList<Post>)
-            })
-            viewLifecycleOwner.lifecycleScope.launch {
-                adapter.submitData(PagingData.empty())
-            }
+//            viewDataBinding.viewmodel?.categoryPosts?.observe(viewLifecycleOwner, Observer {
+//                adapter.submitList(it as ArrayList<Post>)
+//            })
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                adapter.submitData(PagingData.empty())
+//            }
 
         }
     }

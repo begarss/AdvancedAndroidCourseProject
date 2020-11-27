@@ -22,7 +22,7 @@ interface PostListService {
     fun getCategoryList(): Observable<List<Category>>
 
     @GET("categories/{id}/posts/")
-    fun getCategoryPosts(@Path("id") id: Int): Observable<List<Post>>
+    suspend fun getCategoryPosts(@Path("id") id: Int, @Query("page") page: Int? =null): Response<DjangoPostListing>
 
     @GET("posts/{id}/")
     fun getPosttDetails(@Path("id") id: Int): Single<Post>
@@ -30,7 +30,7 @@ interface PostListService {
     //User
     @Headers("Content-Type:application/json;")
     @POST("users/")
-    suspend fun createUser(@Body user: UserCreateBody): Response<Author>
+    suspend fun createUser(@Body user: UserCreateBody): Author
 
     @Headers("Content-Type:application/json;")
     @POST("login/")

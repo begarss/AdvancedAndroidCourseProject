@@ -16,26 +16,33 @@ import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 
 
-class UserViewModel(private val repository: UserRepository) : AndroidViewModel(Application()), KoinComponent {
-    val newUser = MutableLiveData<Author>()
+class UserViewModel(private val repository: UserRepository) : AndroidViewModel(Application()),
+    KoinComponent {
+    private val _newUserResponse: MutableLiveData<Resource<Author>> = MutableLiveData()
+    val newUserResponse: LiveData<Resource<Author>>
+        get() = _newUserResponse
+
     private val _loginResponse: MutableLiveData<Resource<LoginResponse>> = MutableLiveData()
     val loginResponse: LiveData<Resource<LoginResponse>>
         get() = _loginResponse
 
     val postList = MutableLiveData<Resource<List<Post>>>()
 
-    suspend fun createUser(username: String, password: String) {
-        viewModelScope.launch {
-            repository.createUser(username, password) { isSuccess, response ->
-                if (isSuccess) {
-                    newUser.value = response
-                } else {
-                    newUser.value = null
-                }
-            }
-        }
-    }
+//    suspend fun createUser(username: String, password: String) {
+//        viewModelScope.launch {
+//            repository.createUser(username, password) { isSuccess, response ->
+//                if (isSuccess) {
+//                    newUser.value = response
+//                } else {
+//                    newUser.value = null
+//                }
+//            }
+//        }
+//    }
 
+    fun createUser(username: String, password: String) = viewModelScope.launch {
+        _newUserResponse.value = repository.creatUser(username, password)
+    }
 
 
     fun login(username: String, password: String) = viewModelScope.launch {
@@ -43,14 +50,17 @@ class UserViewModel(private val repository: UserRepository) : AndroidViewModel(A
         _loginResponse.value = repository.login(username, password)
     }
 
-     fun saveUserInfo(token: String,name:String,id:Int,ava:String,issuper:Boolean) = viewModelScope.launch {
-        repository.saveUserInfo(token,name, id, ava, issuper)
-    }
+    fun saveUserInfo(token: String, name: String, id: Int, ava: String, issuper: Boolean) =
+        viewModelScope.launch {
 
-    fun getUserPosts(id:Int) = viewModelScope.launch {
+            repository.saveUserInfo(token, name, id, ava, issuper)
+        }
+
+    fun getUserPosts(id: Int) = viewModelScope.launch {
         postList.value = repository.getUserPosts(id)
     }
-    fun getPrefs():UserManager{
+
+    fun getPrefs(): UserManager {
         return repository.getPrefs()
     }
 

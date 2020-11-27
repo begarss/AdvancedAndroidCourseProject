@@ -109,6 +109,8 @@ dependencies {
     implementation 'br.com.simplepass:loading-button-android:2.2.0'
     //progressbar
     implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
+    //support
+
 
 
 }

@@ -38,6 +38,9 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
         return repository.fetchPosts().cachedIn(viewModelScope)
     }
 
+    fun getCatPosts(id:Int):Flow<PagingData<Post>>{
+        return repository.getCatPosts(id).cachedIn(viewModelScope)
+    }
 //    fun getPosts() {
 //        dataLoading.value = true
 //        repository.getPosts { isSuccess, response ->
@@ -64,18 +67,18 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
         }
     }
 
-    fun getCatPosts(id: Int) {
-        repository.getCategoryPosts(id) { isSuccess, response ->
-            dataLoading.value = false
-            if (isSuccess) {
-                categoryPosts.value = response
-                empty.value = false
-            } else {
-                categoryPosts.value = emptyList()
-                empty.value = true
-            }
-        }
-    }
+//    fun getCatPosts(id: Int) {
+//        repository.getCategoryPosts(id) { isSuccess, response ->
+//            dataLoading.value = false
+//            if (isSuccess) {
+//                categoryPosts.value = response
+//                empty.value = false
+//            } else {
+//                categoryPosts.value = emptyList()
+//                empty.value = true
+//            }
+//        }
+//    }
 
     fun fetchPostDetails(id: Int) {
         dataLoading.value = true

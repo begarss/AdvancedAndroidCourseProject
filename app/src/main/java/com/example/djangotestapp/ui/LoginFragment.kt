@@ -5,6 +5,10 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -60,10 +64,11 @@ class LoginFragment : Fragment() {
                         it.value.token,
                         it.value.username,
                         it.value.userid,
-                        it.value.profile_pic,
+                        it.value.profile_pic ?:"",
                         it.value.is_superuser
                     )
                     requireActivity().startNewActivity(MainActivity::class.java)
+                    loadingBtnProgress.visibility = View.GONE
 
 
 
@@ -81,9 +86,21 @@ class LoginFragment : Fragment() {
             loadingBtnProgress.visibility = View.VISIBLE
             userViewModel.login(username, password)
         }
-
+        moveToSignUp(textViewRegisterNow.text.toString())
 
     }
 
+    fun moveToSignUp(text:String){
+        val ss = SpannableString(text)
 
+        val clickableSpan1: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment2())
+            }
+        }
+        Log.d("UPP", "moveToSignUp: $text")
+        ss.setSpan(clickableSpan1, 25, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        textViewRegisterNow.text =ss
+        textViewRegisterNow.movementMethod = LinkMovementMethod.getInstance()
+    }
 }

@@ -22,6 +22,13 @@ class PostRepository(private val postListService: PostListService) {
         }.flow
     }
 
+    fun getCatPosts(id: Int):Flow<PagingData<Post>> {
+        return Pager(
+            PagingConfig(pageSize = 6,enablePlaceholders = false,prefetchDistance = 3)
+        ){
+            CategoryPostsPagingSource(postListService,id)
+        }.flow
+    }
 
 
     fun getCategories(onResult: (isSuccess: Boolean, response: List<String>) -> Unit){
@@ -37,18 +44,20 @@ class PostRepository(private val postListService: PostListService) {
             })
     }
 
-    fun getCategoryPosts(id:Int,onResult: (isSuccess: Boolean, response: List<Post>) -> Unit){
-        val posts = postListService.getCategoryPosts(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({posts->
-                onResult(true,posts)
-                Log.i("MG", "CATSPOSTS + $posts")
-            },{
-                onResult(false, emptyList())
-                Log.i("MG", it.message)
-            })
-    }
+
+
+//    fun getCategoryPosts(id:Int,onResult: (isSuccess: Boolean, response: List<Post>) -> Unit){
+////        val posts = postListService.getCategoryPosts(id)
+////            .subscribeOn(Schedulers.io())
+////            .observeOn(AndroidSchedulers.mainThread())
+////            .subscribe({posts->
+////                onResult(true,posts)
+////                Log.i("MG", "CATSPOSTS + $posts")
+////            },{
+////                onResult(false, emptyList())
+////                Log.i("MG", it.message)
+////            })
+
 
     fun getPost(id:Int,onResult: (isSuccess: Boolean, response: Post?) -> Unit) {
         val students = postListService.getPosttDetails(id)
