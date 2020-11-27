@@ -18,7 +18,7 @@ object API {
 
     fun generatePostService(): PostListService {
         val retrofit = Retrofit.Builder()
-            .baseUrl(tempUrl).client(getHttpClient()).addCallAdapterFactory(
+            .baseUrl(BASE_URL).client(getHttpClient()).addCallAdapterFactory(
                 RxJava2CallAdapterFactory.create()
             ).addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
