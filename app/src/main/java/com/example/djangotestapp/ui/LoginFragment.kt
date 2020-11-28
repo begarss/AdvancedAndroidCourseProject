@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -26,9 +28,13 @@ import com.example.djangotestapp.model.api.Resource
 import com.example.djangotestapp.utils.startNewActivity
 import com.example.djangotestapp.viewmodel.UserViewModel
 import com.google.android.material.bottomappbar.BottomAppBar
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import org.json.JSONException
+import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -54,11 +60,7 @@ class LoginFragment : Fragment() {
         userViewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Success -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Login success ${it.value.username}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
 
                     userViewModel.saveUserInfo(
                         it.value.token,
@@ -67,15 +69,22 @@ class LoginFragment : Fragment() {
                         it.value.profile_pic ?:"",
                         it.value.is_superuser
                     )
-                    requireActivity().startNewActivity(MainActivity::class.java)
+                    Toast.makeText(
+                        requireContext(),
+                        "Login success ${it.value.username}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        requireActivity().startNewActivity(MainActivity::class.java)
+                    },300)
+
                     loadingBtnProgress.visibility = View.GONE
 
 
 
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Login failure ${it}", Toast.LENGTH_SHORT)
-                        .show()
+                    showError(it.errorBody)
                 }
             }
         })
@@ -102,5 +111,26 @@ class LoginFragment : Fragment() {
         ss.setSpan(clickableSpan1, 25, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         textViewRegisterNow.text =ss
         textViewRegisterNow.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    fun showError(errorBody: ResponseBody?){
+        var jsonObject: JSONObject? = null
+
+        try {
+            jsonObject = JSONObject(errorBody?.string())
+            val userMessage = jsonObject!!
+                .getJSONArray("non_field_errors")[0]
+
+            Toasty.error(requireContext(), "$userMessage", Toast.LENGTH_SHORT, true)
+                .show();
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            Toast.makeText(
+                requireContext(),
+                "User creation failure ${e.toString()}",
+                Toast.LENGTH_LONG
+            )
+                .show()
+        }
     }
 }

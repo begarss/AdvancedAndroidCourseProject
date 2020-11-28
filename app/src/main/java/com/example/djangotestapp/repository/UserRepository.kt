@@ -56,7 +56,9 @@ class UserRepository(private val service: PostListService, private val manager: 
         manager.saveUserSuperState(issuper)
     }
 
-
+    suspend fun saveUserPostsCount(size:Int){
+        manager.saveUserPostsCount(size)
+    }
 
     suspend fun getUserPosts(id:Int) = safeApiCall {
 

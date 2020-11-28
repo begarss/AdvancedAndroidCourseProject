@@ -1,6 +1,8 @@
 package com.example.djangotestapp.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.load.engine.Resource
 import com.example.djangotestapp.R
 import com.example.djangotestapp.viewmodel.UserViewModel
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -39,20 +42,25 @@ class SignUpFragment : Fragment() {
             loadingBtnProgress.visibility = View.VISIBLE
             val username = SUlogin.text.toString()
             val psw = SUpsw.text.toString()
-            userViewModel.createUser(username, psw)
+            Handler(Looper.getMainLooper()).postDelayed({
+                userViewModel.createUser(username, psw)
+            }, 100)
         }
 
         userViewModel.newUserResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is com.example.djangotestapp.model.api.Resource.Success -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "User created ${it.value.username}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    loadingBtnProgress.visibility = View.GONE
 
-                    findNavController().popBackStack()
+                    loadingBtnProgress.visibility = View.GONE
+                    Toasty.success(
+                        requireContext(),
+                        "Success! User created",
+                        Toast.LENGTH_SHORT,
+                        true
+                    ).show();
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        findNavController().popBackStack()
+                    }, 100)
                 }
                 is com.example.djangotestapp.model.api.Resource.Failure -> {
                     loadingBtnProgress.visibility = View.GONE
@@ -63,9 +71,8 @@ class SignUpFragment : Fragment() {
                         val userMessage = jsonObject!!
                             .getJSONArray("username")[0]
 
-
-                        Toast.makeText(requireContext(), "${userMessage}", Toast.LENGTH_SHORT)
-                            .show()
+                        Toasty.error(requireContext(), "$userMessage", Toast.LENGTH_SHORT, true)
+                            .show();
                     } catch (e: JSONException) {
                         e.printStackTrace()
                         Toast.makeText(

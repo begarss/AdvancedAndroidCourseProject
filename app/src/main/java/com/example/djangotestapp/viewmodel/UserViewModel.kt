@@ -27,6 +27,8 @@ class UserViewModel(private val repository: UserRepository) : AndroidViewModel(A
         get() = _loginResponse
 
     val postList = MutableLiveData<Resource<List<Post>>>()
+    var postCount=MutableLiveData<Int>()
+
 
 //    suspend fun createUser(username: String, password: String) {
 //        viewModelScope.launch {
@@ -55,6 +57,10 @@ class UserViewModel(private val repository: UserRepository) : AndroidViewModel(A
 
             repository.saveUserInfo(token, name, id, ava, issuper)
         }
+
+    fun savePostsCount(size:Int) = viewModelScope.launch {
+        repository.saveUserPostsCount(size)
+    }
 
     fun getUserPosts(id: Int) = viewModelScope.launch {
         postList.value = repository.getUserPosts(id)

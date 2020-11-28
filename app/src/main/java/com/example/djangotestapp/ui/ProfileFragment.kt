@@ -4,12 +4,14 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.djangotestapp.R
+import com.example.djangotestapp.model.api.Resource
+import com.example.djangotestapp.model.dataClass.Post
 import com.example.djangotestapp.utils.UserManager
 import com.example.djangotestapp.utils.startNewActivity
 import com.example.djangotestapp.viewmodel.UserViewModel
@@ -72,9 +76,6 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
         val viewPager:ViewPager = materialup_viewpager
         val appbarLayout:AppBarLayout = materialup_appbar
         mProfileImage = profilePic
-
-        val toolbar :Toolbar= materialup_toolbar
-
         appbarLayout.addOnOffsetChangedListener(this)
         mMaxScrollSize = appbarLayout.totalScrollRange
 
@@ -84,12 +85,14 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
         tabLayout.setupWithViewPager(viewPager)
 
         prefs = userViewModel.getPrefs()
-        prefs?.userName?.asLiveData()?.observe(requireActivity(), Observer {
+        setPostsCount()
+        prefs.userName.asLiveData().observe(requireActivity(), Observer {
             if (it != null)
                 userName.text = it.toString()
         })
-        prefs?.userAva?.asLiveData()?.observe(requireActivity(), Observer {
-            Glide.with(view.context).load(it).into(profilePic)
+        prefs.userAva.asLiveData().observe(requireActivity(), Observer {
+            if (it!=null)
+                Glide.with(view.context).load(it).into(profilePic)
         })
 
     }
@@ -116,7 +119,7 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
     }
 
     private class TabsAdapter(fm: FragmentManager?) :
-        FragmentPagerAdapter(fm!!) {
+        FragmentStatePagerAdapter(fm!!) {
         override fun getCount(): Int {
             return TAB_COUNT
         }
@@ -126,9 +129,9 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            if (position == 0)return "Published"
+            return if (position == 0) "Published"
             else
-                return "Not published"
+                "Not published"
         }
 
         companion object {
@@ -147,5 +150,12 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
     private fun logout() = lifecycleScope.launch {
         prefs.clear()
         requireActivity().startNewActivity(LoginActivity::class.java)
+    }
+
+    private fun setPostsCount(){
+        prefs.postCount.asLiveData().observe(requireActivity(), Observer {
+            if (it!=null)
+                postCount.text = it.toString()
+        })
     }
 }

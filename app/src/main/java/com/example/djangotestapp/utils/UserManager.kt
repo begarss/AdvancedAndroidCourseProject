@@ -20,7 +20,7 @@ class UserManager(context: Context) {
         private val USER_NAME = preferencesKey<String>("name")
         private val USER_AVA = preferencesKey<String>("ava")
         private val USER_SUPER = preferencesKey<Boolean>("is_superuser")
-
+        private val USER_POST_COUNT = preferencesKey<Int>("postsCount")
     }
 
     init {
@@ -47,6 +47,11 @@ class UserManager(context: Context) {
         get() = dataStore.data.map { preferences ->
             preferences[USER_SUPER]
         }
+    val postCount: Flow<Int?>
+        get() = dataStore.data.map { preferences ->
+            preferences[USER_POST_COUNT]
+        }
+
     suspend fun saveAuthToken(authToken: String) {
         dataStore.edit { preferences ->
             preferences[KEY_AUTH] = authToken
@@ -71,6 +76,12 @@ class UserManager(context: Context) {
     suspend fun saveUserSuperState(issuper: Boolean) {
         dataStore.edit { preferences ->
             preferences[USER_SUPER] = issuper
+        }
+    }
+
+    suspend fun saveUserPostsCount(count: Int) {
+        dataStore.edit { preferences ->
+            preferences[USER_POST_COUNT] = count
         }
     }
 

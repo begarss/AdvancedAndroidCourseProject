@@ -53,7 +53,7 @@ class UsersPostPage : Fragment() {
             when(it){
                 is Resource.Success->{
                     adapter.submitList(it.value as ArrayList<Post>)
-
+                    userViewModel.savePostsCount(it.value.size)
                 }
                 is Resource.Failure -> {
                     Toast.makeText(requireContext(), "Loading failure ${it}", Toast.LENGTH_SHORT)
