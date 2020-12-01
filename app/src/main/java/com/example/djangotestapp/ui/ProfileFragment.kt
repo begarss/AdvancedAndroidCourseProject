@@ -86,11 +86,11 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
 
         prefs = userViewModel.getPrefs()
         setPostsCount()
-        prefs.userName.asLiveData().observe(requireActivity(), Observer {
+        prefs.userName.asLiveData().observe(viewLifecycleOwner, Observer {
             if (it != null)
                 userName.text = it.toString()
         })
-        prefs.userAva.asLiveData().observe(requireActivity(), Observer {
+        prefs.userAva.asLiveData().observe(viewLifecycleOwner, Observer {
             if (it!=null)
                 Glide.with(view.context).load(it).into(profilePic)
         })
@@ -153,7 +153,7 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
     }
 
     private fun setPostsCount(){
-        prefs.postCount.asLiveData().observe(requireActivity(), Observer {
+        prefs.postCount.asLiveData().observe(viewLifecycleOwner, Observer {
             if (it!=null)
                 postCount.text = it.toString()
         })

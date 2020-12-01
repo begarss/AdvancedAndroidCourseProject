@@ -13,32 +13,14 @@ import com.example.djangotestapp.utils.UserManager
 import com.example.djangotestapp.utils.startNewActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
 import retrofit2.Response
 import java.util.prefs.Preferences
 import kotlin.math.log
 
 class UserRepository(private val service: PostListService, private val manager: UserManager) : BaseRepository() {
 
-//    suspend fun createUser(
-//        username: String,
-//        password: String,
-//        onResult: (isSuccess: Boolean, response: Author?) -> Unit
-//    ) {
-//        try {
-//            val res = service.createUser(UserCreateBody(username, password))
-//            if (res.isSuccessful) {
-//                res.body()?.let { onResult(true, it) }
-//                Log.d("UPP", "createUser: ${res.body()?.username}")
-//            }
-//
-//        } catch (
-//            cause: Throwable
-//        ) {
-//            onResult(false, null)
-//
-//            throw UserRefreshError("Error with user registration", cause)
-//        }
-//    }
+
 
     suspend fun creatUser(username: String,password: String) = safeApiCall{
         service.createUser(UserCreateBody(username, password))
@@ -60,6 +42,13 @@ class UserRepository(private val service: PostListService, private val manager: 
         manager.saveUserPostsCount(size)
     }
 
+    suspend fun saveUserAva(uri : String){
+        manager.saveUserAva(uri)
+    }
+    suspend fun saveUserName(name: String){
+        manager.saveUserName(name)
+    }
+
     suspend fun getUserPosts(id:Int) = safeApiCall {
 
         service.getUserPosts(id)
@@ -67,11 +56,13 @@ class UserRepository(private val service: PostListService, private val manager: 
     fun getPrefs():UserManager{
         return manager
     }
+
+    suspend fun setAvatar(id: Int,file: MultipartBody.Part)=safeApiCall {
+        service.setAvatar(id,file)
+    }
+
+    suspend fun editUser(id:Int,info:UserCreateBody) = safeApiCall {
+        service.editUserInfo(id,info)
+    }
 }
 
-class UserRefreshError(message: String, cause: Throwable?) : Throwable(message, cause)
-
-interface UserRefreshCallback {
-    fun onSuccess()
-    fun onError(cause: Throwable)
-}

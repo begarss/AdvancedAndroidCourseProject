@@ -13,7 +13,7 @@
         android:title="Профиль"
         android:icon="@drawable/ic_person"/>
     <item
-        android:id="@+id/settings"
+        android:id="@+id/settingsFragment"
         android:title="Настройки"
         android:icon="@drawable/ic_setting"/>
 </menu>

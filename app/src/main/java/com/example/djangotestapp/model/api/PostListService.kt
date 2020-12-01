@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.djangotestapp.model.dataClass.*
 import io.reactivex.Observable
 import io.reactivex.Single
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -22,10 +23,14 @@ interface PostListService {
     fun getCategoryList(): Observable<List<Category>>
 
     @GET("categories/{id}/posts/")
-    suspend fun getCategoryPosts(@Path("id") id: Int, @Query("page") page: Int? =null): Response<DjangoPostListing>
+    suspend fun getCategoryPosts(
+        @Path("id") id: Int,
+        @Query("page") page: Int? = null
+    ): Response<DjangoPostListing>
 
     @GET("posts/{id}/")
     fun getPosttDetails(@Path("id") id: Int): Single<Post>
+
 
     //User
     @Headers("Content-Type:application/json;")
@@ -37,5 +42,12 @@ interface PostListService {
     suspend fun login(@Body login: UserCreateBody): LoginResponse
 
     @GET("profile/{id}/posts")
-    suspend fun getUserPosts(@Path("id") id:Int): List<Post>
+    suspend fun getUserPosts(@Path("id") id: Int): List<Post>
+
+    @Multipart
+    @PUT("users/{id}/profile/")
+    suspend fun setAvatar(@Path("id") id: Int,@Part filePart: MultipartBody.Part) :ProfileResponse
+
+    @PUT("users/{id}/")
+    suspend fun editUserInfo(@Path("id") id:Int,@Body info : UserCreateBody) : Author
 }

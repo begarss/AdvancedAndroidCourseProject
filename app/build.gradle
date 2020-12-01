@@ -112,5 +112,9 @@ dependencies {
     //toasty
     implementation 'com.github.GrenderG:Toasty:1.5.0'
 
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    implementation 'androidx.preference:preference:1.1.1'
+
 
 }

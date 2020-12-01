@@ -8,11 +8,13 @@ import com.example.djangotestapp.model.api.Resource
 import com.example.djangotestapp.model.dataClass.Author
 import com.example.djangotestapp.model.dataClass.LoginResponse
 import com.example.djangotestapp.model.dataClass.Post
+import com.example.djangotestapp.model.dataClass.UserCreateBody
 import com.example.djangotestapp.repository.UserRepository
 import com.example.djangotestapp.ui.LoginActivity
 import com.example.djangotestapp.utils.UserManager
 import com.example.djangotestapp.utils.startNewActivity
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import org.koin.core.KoinComponent
 
 
@@ -26,21 +28,13 @@ class UserViewModel(private val repository: UserRepository) : AndroidViewModel(A
     val loginResponse: LiveData<Resource<LoginResponse>>
         get() = _loginResponse
 
+    private val _editResponse: MutableLiveData<Resource<Author>> = MutableLiveData()
+    val editResponse: LiveData<Resource<Author>>
+        get() = _editResponse
+
     val postList = MutableLiveData<Resource<List<Post>>>()
-    var postCount=MutableLiveData<Int>()
+    var postCount = MutableLiveData<Int>()
 
-
-//    suspend fun createUser(username: String, password: String) {
-//        viewModelScope.launch {
-//            repository.createUser(username, password) { isSuccess, response ->
-//                if (isSuccess) {
-//                    newUser.value = response
-//                } else {
-//                    newUser.value = null
-//                }
-//            }
-//        }
-//    }
 
     fun createUser(username: String, password: String) = viewModelScope.launch {
         _newUserResponse.value = repository.creatUser(username, password)
@@ -58,12 +52,29 @@ class UserViewModel(private val repository: UserRepository) : AndroidViewModel(A
             repository.saveUserInfo(token, name, id, ava, issuper)
         }
 
-    fun savePostsCount(size:Int) = viewModelScope.launch {
+    fun savePostsCount(size: Int) = viewModelScope.launch {
         repository.saveUserPostsCount(size)
+    }
+
+    fun saveUserAva(uri: String) = viewModelScope.launch {
+        repository.saveUserAva(uri)
+    }
+
+    fun saveUserName(name: String) = viewModelScope.launch {
+        repository.saveUserName(name)
     }
 
     fun getUserPosts(id: Int) = viewModelScope.launch {
         postList.value = repository.getUserPosts(id)
+    }
+
+    fun setUserAva(id: Int, file: MultipartBody.Part) = viewModelScope.launch {
+        repository.setAvatar(id, file)
+    }
+
+    fun editUser(id: Int,info:UserCreateBody) = viewModelScope.launch {
+
+        _editResponse.value = repository.editUser(id,info)
     }
 
     fun getPrefs(): UserManager {
