@@ -9,6 +9,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.djangotestapp.viewmodel.PostViewModel
 import com.example.djangotestapp.databinding.PostItemBinding
+import com.example.djangotestapp.model.dataClass.FavResponse
 import com.example.djangotestapp.model.dataClass.Post
 import com.example.djangotestapp.utils.DiffUtilCallBack
 import kotlinx.android.synthetic.main.post_item.view.*
@@ -19,6 +20,7 @@ class PostAdapter internal constructor(
 ) : PagingDataAdapter<Post, PostViewHolder>(DiffUtilCallBack()) {
 
     private var items: ArrayList<Post> = ArrayList()
+    private var favs:List<Int> = listOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val dataBinding =
             PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -31,7 +33,7 @@ class PostAdapter internal constructor(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, listener)}
+            holder.bind(it, listener,favs)}
 //        when (holder) {
 //            is PostViewHolder -> {
 //                getItem(position)?.let {
@@ -55,6 +57,10 @@ class PostAdapter internal constructor(
 //        refresh()
     }
 
+    fun submitFavs(favList:List<Int>){
+        favs = favList
+    }
+
     fun getList(): ArrayList<Post> {
         return items as ArrayList<Post>
     }
@@ -63,4 +69,6 @@ class PostAdapter internal constructor(
 
 interface OnPostClickListener {
     fun onPostClick(post:Post)
+    fun setLike(postId:Int)
+    fun removeLike(postId:Int)
 }

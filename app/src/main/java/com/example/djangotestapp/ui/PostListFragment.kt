@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
@@ -15,14 +18,20 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.djangotestapp.R
 import com.example.djangotestapp.utils.TopPadding
 import com.example.djangotestapp.viewmodel.PostViewModel
 import com.example.djangotestapp.databinding.FragmentPostListBinding
+import com.example.djangotestapp.model.api.Resource
+import com.example.djangotestapp.model.dataClass.FavBody
+import com.example.djangotestapp.model.dataClass.FavResponse
 import com.example.djangotestapp.model.dataClass.Post
 import com.example.djangotestapp.ui.adapter.OnPostClickListener
 import com.example.djangotestapp.ui.adapter.PostAdapter
+import com.example.djangotestapp.utils.UserManager
 import com.example.djangotestapp.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_post_list.*
+import kotlinx.android.synthetic.main.post_item.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -33,7 +42,8 @@ class PostListFragment : Fragment(), OnPostClickListener {
     private lateinit var viewDataBinding: FragmentPostListBinding
     private lateinit var adapter: PostAdapter
     private val postViewModel: PostViewModel by viewModel()
-
+    private lateinit var prefs: UserManager
+    private var userId = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -59,6 +69,27 @@ class PostListFragment : Fragment(), OnPostClickListener {
         fetchPosts()
 
         setSpinner()
+        prefs = postViewModel.getPrefs()
+        prefs.userID.asLiveData().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                userId =it
+                postViewModel.getFavorites(it)
+            }
+            Toast.makeText(requireContext(),"$it",Toast.LENGTH_SHORT).show()
+        })
+        postViewModel.favPosts.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Success->{
+                    val markedPosts = it.value.map {
+                        it.post_id
+                    }
+                    Log.d("UPP", "FAVVfetchPosts: $markedPosts  ")
+                    adapter.submitFavs(markedPosts)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        })
+
 
 
     }
@@ -101,26 +132,26 @@ class PostListFragment : Fragment(), OnPostClickListener {
 
 
     private fun fetchPosts() {
+
+
+
         viewLifecycleOwner.lifecycleScope.launch {
 
             viewDataBinding.viewmodel?.fetchPosts()?.collectLatest {
                 adapter.submitData(it)
 
             }
-            Log.d("UPP", "fetchPostsss: ${adapter.getItemId(1)}")
-
         }
 
     }
 
-    private fun fetchCatPosts(position: Int){
+    private fun fetchCatPosts(position: Int) {
+
         viewLifecycleOwner.lifecycleScope.launch {
 
             viewDataBinding.viewmodel?.getCatPosts(position)?.collectLatest {
                 adapter.submitData(it)
             }
-            Log.d("UPP", "fetchPostsss: ${adapter.getItemId(1)}")
-
         }
     }
 
@@ -128,6 +159,14 @@ class PostListFragment : Fragment(), OnPostClickListener {
         view?.findNavController()
             ?.navigate(PostListFragmentDirections.toPostDetailsFragment(post.id))
 
+    }
+
+    override fun setLike(postId: Int) {
+        postViewModel.addToFav(FavBody(userId,true,postId))
+    }
+
+    override fun removeLike(postId: Int) {
+        postViewModel.deleteFav(userId,postId)
     }
 
     private fun filterPost(position: Int) {

@@ -19,7 +19,7 @@ import com.example.djangotestapp.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_posts.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UsersPostPage : Fragment() {
+class UsersPostPage(private val postOption: Boolean) : Fragment() {
     private val userViewModel: UserViewModel by viewModel()
     private lateinit var dataBinding: FragmentUserPostsBinding
     private lateinit var adapter: ViewPagerAdapter
@@ -49,18 +49,33 @@ class UsersPostPage : Fragment() {
     }
 
     private fun setObservers() {
-        dataBinding.viewmodel?.postList?.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Success->{
-                    adapter.submitList(it.value as ArrayList<Post>)
-                    userViewModel.savePostsCount(it.value.size)
+
+            dataBinding.viewmodel?.postList?.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is Resource.Success -> {
+                        val publicPosts = it.value.filter {
+                            it.is_published
+                        }
+                        val nonPublished = it.value.filter {
+                            !it.is_published
+                        }
+                        if (postOption)
+                            adapter.submitList(publicPosts as ArrayList<Post>)
+                        else
+                            adapter.submitList(nonPublished as ArrayList<Post>)
+                        userViewModel.savePostsCount(it.value.size)
+                    }
+                    is Resource.Failure -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Loading failure ${it}",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                 }
-                is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Loading failure ${it}", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        })
+            })
+
     }
 
     private fun setupAdapter() {

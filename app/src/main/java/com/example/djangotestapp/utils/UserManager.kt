@@ -21,6 +21,7 @@ class UserManager(context: Context) {
         private val USER_AVA = preferencesKey<String>("ava")
         private val USER_SUPER = preferencesKey<Boolean>("is_superuser")
         private val USER_POST_COUNT = preferencesKey<Int>("postsCount")
+//        private val USER_FAVS_ID = preferencesKey<List<Int>>("fav_post_id")
     }
 
     init {
@@ -85,6 +86,11 @@ class UserManager(context: Context) {
         }
     }
 
+//    suspend fun saveFavsId(listId:List<Int>){
+//        dataStore.edit {
+//            it[USER_FAVS_ID] = listId
+//        }
+//    }
 
 
     suspend fun clear() {

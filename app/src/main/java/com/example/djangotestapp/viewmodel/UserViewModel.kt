@@ -5,10 +5,7 @@ import android.app.Application
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.example.djangotestapp.model.api.Resource
-import com.example.djangotestapp.model.dataClass.Author
-import com.example.djangotestapp.model.dataClass.LoginResponse
-import com.example.djangotestapp.model.dataClass.Post
-import com.example.djangotestapp.model.dataClass.UserCreateBody
+import com.example.djangotestapp.model.dataClass.*
 import com.example.djangotestapp.repository.UserRepository
 import com.example.djangotestapp.ui.LoginActivity
 import com.example.djangotestapp.utils.UserManager
@@ -31,6 +28,8 @@ class UserViewModel(private val repository: UserRepository) : AndroidViewModel(A
     private val _editResponse: MutableLiveData<Resource<Author>> = MutableLiveData()
     val editResponse: LiveData<Resource<Author>>
         get() = _editResponse
+
+    val favPosts = MutableLiveData<Resource<List<FavResponse>>>()
 
     val postList = MutableLiveData<Resource<List<Post>>>()
     var postCount = MutableLiveData<Int>()
@@ -79,6 +78,10 @@ class UserViewModel(private val repository: UserRepository) : AndroidViewModel(A
 
     fun getPrefs(): UserManager {
         return repository.getPrefs()
+    }
+
+    fun getFavorites(userId:Int) = viewModelScope.launch {
+        favPosts.value = repository.getFavs(userId)
     }
 
 }

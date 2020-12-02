@@ -2,6 +2,7 @@ package com.example.djangotestapp.model.api
 
 import androidx.lifecycle.LiveData
 import com.example.djangotestapp.model.dataClass.*
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -46,8 +47,17 @@ interface PostListService {
 
     @Multipart
     @PUT("users/{id}/profile/")
-    suspend fun setAvatar(@Path("id") id: Int,@Part filePart: MultipartBody.Part) :ProfileResponse
+    suspend fun setAvatar(@Path("id") id: Int, @Part filePart: MultipartBody.Part): ProfileResponse
 
     @PUT("users/{id}/")
-    suspend fun editUserInfo(@Path("id") id:Int,@Body info : UserCreateBody) : Author
+    suspend fun editUserInfo(@Path("id") id: Int, @Body info: UserCreateBody): Author
+    //favorites posts
+    @GET("fav/{user_id}/")
+    suspend fun getFavPosts(@Path("user_id") id: Int): List<FavResponse>
+
+    @POST("fav/")
+    suspend fun markAsFav(@Body postInfo: FavBody): FavResponse
+
+    @DELETE("fav/{user_id}/{post_id}/")
+    suspend fun removeFromFav(@Path("user_id") userId: Int, @Path("post_id") post_id: Int)
 }

@@ -9,14 +9,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.example.djangotestapp.model.dataClass.Category
-import com.example.djangotestapp.model.dataClass.LoginResponse
-import com.example.djangotestapp.model.dataClass.Post
+import com.example.djangotestapp.model.api.Resource
+import com.example.djangotestapp.model.dataClass.*
 import com.example.djangotestapp.repository.PostRepository
+import com.example.djangotestapp.utils.UserManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 
 class PostViewModel(private val repository: PostRepository) : BaseViewModel(), KoinComponent {
@@ -24,6 +25,7 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
     val categoryPosts = MutableLiveData<List<Post>>()
     val categoryList = MutableLiveData<List<String>>()
     val post = MutableLiveData<Post>()
+    val favPosts = MutableLiveData<Resource<List<FavResponse>>>()
 
     fun fetchPosts(): Flow<PagingData<Post>> {
         val das = repository.fetchPosts().map {
@@ -41,19 +43,20 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
     fun getCatPosts(id:Int):Flow<PagingData<Post>>{
         return repository.getCatPosts(id).cachedIn(viewModelScope)
     }
-//    fun getPosts() {
-//        dataLoading.value = true
-//        repository.getPosts { isSuccess, response ->
-//            dataLoading.value = false
-//            if (isSuccess) {
-//                postList.value = response
-//                empty.value = false
-//            } else {
-//                postList.value = emptyList()
-//                empty.value = true
-//            }
-//        }
-//    }
+    fun getFavorites(userId:Int) = viewModelScope.launch {
+        favPosts.value = repository.getFavs(userId)
+    }
+
+    fun addToFav(post: FavBody) = viewModelScope.launch {
+        repository.addToFav(post)
+    }
+
+    fun deleteFav(userId: Int,postId:Int) = viewModelScope.launch {
+        repository.removeFav(userId, postId)
+    }
+    fun getPrefs(): UserManager {
+        return repository.getPrefs()
+    }
 
     fun getCategories() {
         repository.getCategories { isSuccess, response ->
@@ -67,18 +70,7 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
         }
     }
 
-//    fun getCatPosts(id: Int) {
-//        repository.getCategoryPosts(id) { isSuccess, response ->
-//            dataLoading.value = false
-//            if (isSuccess) {
-//                categoryPosts.value = response
-//                empty.value = false
-//            } else {
-//                categoryPosts.value = emptyList()
-//                empty.value = true
-//            }
-//        }
-//    }
+
 
     fun fetchPostDetails(id: Int) {
         dataLoading.value = true

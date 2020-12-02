@@ -16,7 +16,7 @@ val networkModule = module {
     single { API.generatePostService() }
 }
 val postModule = module {
-    single { PostRepository(get()) }
+    single { PostRepository(get(),manager = get()) }
 }
 
 val userModule = module {

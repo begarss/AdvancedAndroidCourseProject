@@ -79,16 +79,16 @@ class SettingsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     fun setUserInfo() {
         prefs = userViewModel.getPrefs()
-        prefs.userName.asLiveData().observe(requireActivity(), Observer {
+        prefs.userName.asLiveData().observe(viewLifecycleOwner, Observer {
             if (it != null)
                 Setlogin.setText(it.toString())
         })
-        prefs.userAva.asLiveData().observe(requireActivity(), Observer {
+        prefs.userAva.asLiveData().observe(viewLifecycleOwner, Observer {
             if (it != null)
                 Glide.with(requireContext()).load(it).into(setIV)
         })
 
-        prefs.userID.asLiveData().observe(requireActivity(), Observer {
+        prefs.userID.asLiveData().observe(viewLifecycleOwner, Observer {
             if (it != null)
                 userId = it
         })

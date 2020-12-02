@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.example.djangotestapp.model.api.PostListService
 import com.example.djangotestapp.model.dataClass.Author
+import com.example.djangotestapp.model.dataClass.FavResponse
 import com.example.djangotestapp.model.dataClass.LoginResponse
 import com.example.djangotestapp.model.dataClass.UserCreateBody
 import com.example.djangotestapp.ui.LoginActivity
@@ -63,6 +64,16 @@ class UserRepository(private val service: PostListService, private val manager: 
 
     suspend fun editUser(id:Int,info:UserCreateBody) = safeApiCall {
         service.editUserInfo(id,info)
+    }
+
+
+
+    suspend fun getFavs(userId:Int) = safeApiCall {
+        service.getFavPosts(userId)
+    }
+
+    suspend fun removeFav(userId: Int,postId:Int) = safeApiCall {
+        service.removeFromFav(userId,postId)
     }
 }
 

@@ -95,6 +95,7 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
                 Glide.with(view.context).load(it).into(profilePic)
         })
 
+
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, i: Int) {
@@ -125,7 +126,9 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
         }
 
         override fun getItem(i: Int): Fragment {
-            return UsersPostPage()
+            var published =true
+            published =i==0
+            return UsersPostPage(published)
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
