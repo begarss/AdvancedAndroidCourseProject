@@ -38,7 +38,6 @@ class PostViewHolder internal constructor(
         val outputDateStr: String = outputFormat.format(dater)
         date.text = outputDateStr.toString()
 
-
         if (marked.contains(post.id)) {
             markIcon.setImageResource(R.drawable.ic_bookmark)
 

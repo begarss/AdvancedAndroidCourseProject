@@ -2,9 +2,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="411dp"
-    android:height="731dp"
+    android:height="800dp"
     android:viewportWidth="411"
-    android:viewportHeight="731"
+    android:viewportHeight="700"
     >
 
     <group>

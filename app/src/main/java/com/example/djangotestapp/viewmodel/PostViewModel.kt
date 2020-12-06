@@ -26,7 +26,7 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
     val categoryList = MutableLiveData<List<String>>()
     val post = MutableLiveData<Post>()
     val favPosts = MutableLiveData<Resource<List<FavResponse>>>()
-
+    val postResponse = MutableLiveData<Resource<Post>>()
     fun fetchPosts(): Flow<PagingData<Post>> {
         val das = repository.fetchPosts().map {
             it.map { it }
@@ -54,6 +54,11 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
     fun deleteFav(userId: Int,postId:Int) = viewModelScope.launch {
         repository.removeFav(userId, postId)
     }
+
+    fun addPost(post:PostCreateBody) = viewModelScope.launch {
+        postResponse.value =  repository.addPost(post)
+
+    }
     fun getPrefs(): UserManager {
         return repository.getPrefs()
     }
@@ -61,7 +66,13 @@ class PostViewModel(private val repository: PostRepository) : BaseViewModel(), K
     fun getCategories() {
         repository.getCategories { isSuccess, response ->
             if (isSuccess) {
-                categoryList.value = response
+
+                val cats  = ArrayList<String>()
+                cats.add(0,"Выберите категорию")
+                response.map {
+                    cats.add(it)
+                }
+                categoryList.value = cats
                 empty.value = false
             } else {
                 categoryList.value = emptyList()

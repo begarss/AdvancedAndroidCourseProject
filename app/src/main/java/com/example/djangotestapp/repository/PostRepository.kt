@@ -7,6 +7,7 @@ import com.example.djangotestapp.model.api.PostListService
 import com.example.djangotestapp.model.dataClass.FavBody
 import com.example.djangotestapp.model.dataClass.FavResponse
 import com.example.djangotestapp.model.dataClass.Post
+import com.example.djangotestapp.model.dataClass.PostCreateBody
 import com.example.djangotestapp.utils.UserManager
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -90,6 +91,10 @@ class PostRepository(
 
     suspend fun removeFav(userId: Int, postId: Int) = safeApiCall {
         postListService.removeFromFav(userId, postId)
+    }
+
+    suspend fun addPost(post:PostCreateBody) = safeApiCall {
+        postListService.addPost(post)
     }
 
     fun getPrefs(): UserManager {

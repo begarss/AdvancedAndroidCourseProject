@@ -26,6 +26,7 @@ import com.example.djangotestapp.utils.startNewActivity
 import com.example.djangotestapp.viewmodel.UserViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -72,6 +73,9 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.BottomAB?.visibility = View.VISIBLE
+        activity?.addPostBtn?.visibility = View.VISIBLE
+
         val tabLayout:TabLayout = materialup_tabs
         val viewPager:ViewPager = materialup_viewpager
         val appbarLayout:AppBarLayout = materialup_appbar

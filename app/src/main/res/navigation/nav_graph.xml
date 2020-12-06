@@ -39,4 +39,9 @@
         android:name="com.example.djangotestapp.ui.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/addPostFragment"
+        android:name="com.example.djangotestapp.AddPostFragment"
+        android:label="fragment_add_post"
+        tools:layout="@layout/fragment_add_post" />
 </navigation>

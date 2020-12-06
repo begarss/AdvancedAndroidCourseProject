@@ -30,6 +30,7 @@ import com.example.djangotestapp.ui.adapter.OnPostClickListener
 import com.example.djangotestapp.ui.adapter.PostAdapter
 import com.example.djangotestapp.utils.UserManager
 import com.example.djangotestapp.viewmodel.UserViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import kotlinx.android.synthetic.main.post_item.*
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +45,7 @@ class PostListFragment : Fragment(), OnPostClickListener {
     private val postViewModel: PostViewModel by viewModel()
     private lateinit var prefs: UserManager
     private var userId = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -61,6 +63,9 @@ class PostListFragment : Fragment(), OnPostClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.BottomAB?.visibility = View.VISIBLE
+        activity?.bottomNavView?.visibility = View.VISIBLE
+        activity?.addPostBtn?.visibility = View.VISIBLE
 
 
 
@@ -69,17 +74,23 @@ class PostListFragment : Fragment(), OnPostClickListener {
         fetchPosts()
 
         setSpinner()
+
+        setFavPosts()
+
+
+    }
+
+    fun setFavPosts() {
         prefs = postViewModel.getPrefs()
         prefs.userID.asLiveData().observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                userId =it
+                userId = it
                 postViewModel.getFavorites(it)
             }
-            Toast.makeText(requireContext(),"$it",Toast.LENGTH_SHORT).show()
         })
         postViewModel.favPosts.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Success->{
+            when (it) {
+                is Resource.Success -> {
                     val markedPosts = it.value.map {
                         it.post_id
                     }
@@ -89,9 +100,6 @@ class PostListFragment : Fragment(), OnPostClickListener {
                 }
             }
         })
-
-
-
     }
 
     private fun setSpinner() {
@@ -134,7 +142,6 @@ class PostListFragment : Fragment(), OnPostClickListener {
     private fun fetchPosts() {
 
 
-
         viewLifecycleOwner.lifecycleScope.launch {
 
             viewDataBinding.viewmodel?.fetchPosts()?.collectLatest {
@@ -162,30 +169,28 @@ class PostListFragment : Fragment(), OnPostClickListener {
     }
 
     override fun setLike(postId: Int) {
-        postViewModel.addToFav(FavBody(userId,true,postId))
+        postViewModel.addToFav(FavBody(userId, true, postId))
     }
 
     override fun removeLike(postId: Int) {
-        postViewModel.deleteFav(userId,postId)
+        postViewModel.deleteFav(userId, postId)
     }
 
     private fun filterPost(position: Int) {
 
 
         if (position == 0) {
-            viewDataBinding.viewmodel?.postList?.observe(viewLifecycleOwner, Observer {
-                adapter.submitList(it as ArrayList<Post>)
-            })
+            viewLifecycleOwner.lifecycleScope.launch {
+
+                viewDataBinding.viewmodel?.fetchPosts()?.collectLatest {
+                    adapter.submitData(it)
+
+                }
+            }
             adapter.refresh()
         } else {
             fetchCatPosts(position)
 
-//            viewDataBinding.viewmodel?.categoryPosts?.observe(viewLifecycleOwner, Observer {
-//                adapter.submitList(it as ArrayList<Post>)
-//            })
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                adapter.submitData(PagingData.empty())
-//            }
 
         }
     }

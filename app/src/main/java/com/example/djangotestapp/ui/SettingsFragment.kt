@@ -24,6 +24,7 @@ import com.example.djangotestapp.viewmodel.UserViewModel
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -58,6 +59,11 @@ class SettingsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mProfileImage = setIV
+        activity?.BottomAB?.visibility = View.VISIBLE
+        activity?.bottomNavView?.visibility = View.VISIBLE
+
+        activity?.addPostBtn?.visibility = View.VISIBLE
+
         setUserInfo()
         btnSetAva.setOnClickListener {
             openCamera()

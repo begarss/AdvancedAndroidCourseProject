@@ -12,6 +12,9 @@ import com.example.djangotestapp.R
 import com.example.djangotestapp.databinding.FragmentPostDetailsBinding
 import com.example.djangotestapp.viewmodel.PostViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class PostDetailsFragment : Fragment() {
@@ -42,11 +45,18 @@ class PostDetailsFragment : Fragment() {
         val id = arg.postId
         postDetailsBinding.viewmodel?.fetchPostDetails(id)
         setObservers()
+
     }
 
     private fun setObservers() {
         postDetailsBinding.viewmodel?.post?.observe(viewLifecycleOwner, Observer {
             var view = postDetailsBinding.root
+            val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'")
+            val outputFormat: DateFormat = SimpleDateFormat("dd MMMM yyyy")
+            val dater: Date = inputFormat.parse(it.date)
+            val outputDateStr: String = outputFormat.format(dater)
+            it.date = outputDateStr.toString()
+
             postDetailsBinding.setVariable(BR.POST,it)
             postDetailsBinding.executePendingBindings()
         })

@@ -13,12 +13,15 @@ import com.example.djangotestapp.model.dataClass.Post
 import com.example.djangotestapp.model.dataClass.PostCreateBody
 import com.example.djangotestapp.utils.UserManager
 import com.example.djangotestapp.utils.startNewActivity
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,6 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView.setupWithNavController(navController)
 
+
+        addPostBtn.setOnClickListener {
+            navController.navigate(R.id.addPostFragment)
+        }
         val userPreferences = UserManager(this)
         userPreferences.authToken.asLiveData().observe(this, Observer {
             if (it == null)

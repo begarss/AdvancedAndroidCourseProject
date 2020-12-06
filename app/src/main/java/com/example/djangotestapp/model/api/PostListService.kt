@@ -18,7 +18,7 @@ interface PostListService {
 
     @Headers("Content-Type:application/json;")
     @POST("posts/")
-    fun addPost(@Body post: PostCreateBody): Observable<Post>
+    suspend fun addPost(@Body post: PostCreateBody): Post
 
     @GET("categories")
     fun getCategoryList(): Observable<List<Category>>
@@ -41,6 +41,8 @@ interface PostListService {
     @Headers("Content-Type:application/json;")
     @POST("login/")
     suspend fun login(@Body login: UserCreateBody): LoginResponse
+
+
 
     @GET("profile/{id}/posts")
     suspend fun getUserPosts(@Path("id") id: Int): List<Post>

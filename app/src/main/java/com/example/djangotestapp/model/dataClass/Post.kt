@@ -6,7 +6,7 @@ import com.example.djangotestapp.model.dataClass.Category
 data class Post(
     val author: Author,
     val category: Category,
-    val date: String,
+    var date: String,
     val description: String,
     val id: Int,
     val is_published: Boolean,
