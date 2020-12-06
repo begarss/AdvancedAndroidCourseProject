@@ -61,7 +61,6 @@ class SettingsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         mProfileImage = setIV
         activity?.BottomAB?.visibility = View.VISIBLE
         activity?.bottomNavView?.visibility = View.VISIBLE
-
         activity?.addPostBtn?.visibility = View.VISIBLE
 
         setUserInfo()

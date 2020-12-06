@@ -74,6 +74,7 @@ class ProfileFragment : Fragment(),AppBarLayout.OnOffsetChangedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.BottomAB?.visibility = View.VISIBLE
+        activity?.bottomNavView?.visibility = View.VISIBLE
         activity?.addPostBtn?.visibility = View.VISIBLE
 
         val tabLayout:TabLayout = materialup_tabs

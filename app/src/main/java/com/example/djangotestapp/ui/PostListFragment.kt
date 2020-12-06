@@ -85,7 +85,8 @@ class PostListFragment : Fragment(), OnPostClickListener {
         prefs.userID.asLiveData().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 userId = it
-                postViewModel.getFavorites(it)
+                postViewModel.
+                getFavorites(it)
             }
         })
         postViewModel.favPosts.observe(viewLifecycleOwner, Observer {

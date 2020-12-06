@@ -1,4 +1,4 @@
-package com.example.djangotestapp
+package com.example.djangotestapp.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
+import com.example.djangotestapp.R
 import com.example.djangotestapp.model.api.Resource
 import com.example.djangotestapp.model.dataClass.PostCreateBody
 import com.example.djangotestapp.utils.UserManager
@@ -16,7 +17,6 @@ import com.example.djangotestapp.viewmodel.PostViewModel
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_post.*
-import kotlinx.android.synthetic.main.fragment_settings.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

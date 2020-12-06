@@ -41,7 +41,16 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/addPostFragment"
-        android:name="com.example.djangotestapp.AddPostFragment"
+        android:name="com.example.djangotestapp.ui.AddPostFragment"
         android:label="fragment_add_post"
         tools:layout="@layout/fragment_add_post" />
+    <fragment
+        android:id="@+id/savedPostsFragment"
+        android:name="com.example.djangotestapp.SavedPostsFragment"
+        android:label="fragment_saved_posts"
+        tools:layout="@layout/fragment_saved_posts" >
+        <action
+            android:id="@+id/action_savedPostsFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
+    </fragment>
 </navigation>

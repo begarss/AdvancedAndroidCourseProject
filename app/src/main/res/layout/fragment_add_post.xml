@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/test_gradient"
-    tools:context=".AddPostFragment">
+    tools:context=".ui.AddPostFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -129,7 +129,7 @@
                         android:layout_marginTop="2dp"
                         android:text="Категория:"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
